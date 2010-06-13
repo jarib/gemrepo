@@ -5,14 +5,14 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "gemrepo"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{A simple gem server for internal gem repos}
+    gem.summary = %Q{A simple gem server, useful for internal gem repos}
+    gem.description = %Q{A simple gem server that supports gem push / install.}
     gem.email = "jari.bakken@gmail.com"
     gem.homepage = "http://github.com/jarib/gemrepo"
     gem.authors = ["Jari Bakken"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
-    gem.add_development_dependency "yard", ">= 0"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    gem.add_development_dependency "rack-test", ">= 0.5.3"
+    gem.add_dependency "sinatra", ">= 1.0"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
@@ -35,11 +35,3 @@ task :spec => :check_dependencies
 
 task :default => :spec
 
-begin
-  require 'yard'
-  YARD::Rake::YardocTask.new
-rescue LoadError
-  task :yardoc do
-    abort "YARD is not available. In order to run yardoc, you must: sudo gem install yard"
-  end
-end

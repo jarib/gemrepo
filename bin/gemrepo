@@ -1,0 +1,45 @@
+require 'gemrepo'
+require 'optparse'
+
+options = {:port => 1234, :gemdir => File.expand_path("~/.gemrepo"), :handler => Rack::Handler::WEBrick }
+
+parser = OptionParser.new do |opts|
+  opts.banner = "USAGE: gemrepo [options]"
+
+  opts.separator ""
+  opts.on "-p", "--port PORT", "use PORT (default: #{options[:port]})" do |port|
+    options[:port] = port
+  end
+
+  opts.on "-d", "--directory DIR", "use DIR as gem directory (default: #{options[:gemdir]})" do |dir|
+    options[:gemdir] = dir
+  end
+
+  opts.on "-s", "--server SERVER", "server to use (webrick/mongrel/thin, default: webrick)" do |s|
+    case s
+    when 'mongrel'
+      options[:handler] = Rack::Handler::Mongrel
+    when 'thin'
+      options[:handler] = Rack::Handler::Thin
+    else
+      # default: webrick
+    end
+  end
+
+  opts.on "-h", "--help" do
+    puts opts
+    exit
+  end
+
+end
+
+parser.parse!(ARGV)
+
+GemRepo.set :gemdir, options[:gemdir]
+FileUtils.mkdir_p options[:gemdir]
+
+options[:handler].run GemRepo, :Port => options[:port]
+
+
+
+
