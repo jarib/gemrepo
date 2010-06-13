@@ -46,7 +46,7 @@ class GemRepo < Sinatra::Base
   end
 
   def indexer
-    @indexer = Gem::Indexer.new settings.gemdir
+    @indexer ||= Gem::Indexer.new settings.gemdir
   end
 end
 
