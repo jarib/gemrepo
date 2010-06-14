@@ -18,7 +18,8 @@ class GemRepo < Sinatra::Base
   end
 
   def pull_spec
-    format = Gem::Format.from_io request.body
+    @body = StringIO.new(request.body.read)
+    format = Gem::Format.from_io @body
     @spec = format.spec
   rescue Exception => ex
     puts ex.message
@@ -33,7 +34,7 @@ class GemRepo < Sinatra::Base
     end
 
     File.open(path, "wb") { |io|
-      io << request.body.string
+      io << @body.string
     }
   end
 
