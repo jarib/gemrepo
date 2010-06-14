@@ -11,7 +11,7 @@ class GemRepo < Sinatra::Base
     if pull_spec
       save
       reindex
-      "Successfully registered gem: #{@spec.name}"
+      "Successfully registered gem: #{@spec.original_name}"
     else
       error 422, "invalid gem"
     end
@@ -27,6 +27,11 @@ class GemRepo < Sinatra::Base
 
   def save
     path = "#{gem_repository}/#{@spec.original_name}.gem"
+
+    if File.exist?(path)
+      return error(422, "gem already exists")
+    end
+
     File.open(path, "wb") { |io|
       io << request.body.string
     }
