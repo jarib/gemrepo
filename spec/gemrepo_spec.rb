@@ -11,7 +11,7 @@ describe GemRepo do
     post "/api/v1/gems", sample_gem
 
     last_response.should be_ok
-    last_response.body.should == "Successfully registered gem: sample-0.0.1"
+    last_response.body.should == "Successfully registered gem: sample-0.0.1 [#{Socket.gethostname}]"
 
     current_gems.size.should == 1
     current_index.should_not be_nil

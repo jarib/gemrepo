@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'socket'
 require 'rubygems/indexer'
 require 'fileutils'
 
@@ -11,7 +12,7 @@ class GemRepo < Sinatra::Base
     if pull_spec
       save
       reindex
-      "Successfully registered gem: #{@spec.original_name}"
+      "Successfully registered gem: #{@spec.original_name} [#{Socket.gethostname}]"
     else
       error 422, "invalid gem"
     end
